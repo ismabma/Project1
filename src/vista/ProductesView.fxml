@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="root" prefHeight="513.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlador.ProductesController">
+   <children>
+      <GridPane layoutX="19.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="396.0" prefWidth="601.0" AnchorPane.leftAnchor="19.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="293.0" minWidth="10.0" prefWidth="111.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="521.0" minWidth="10.0" prefWidth="219.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="521.0" minWidth="10.0" prefWidth="278.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="35.0" minHeight="0.0" prefHeight="35.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="53.0" minHeight="0.0" prefHeight="28.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="62.0" minHeight="0.0" prefHeight="34.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="79.0" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="82.0" minHeight="0.0" prefHeight="32.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="85.0" minHeight="0.0" prefHeight="31.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="72.0" minHeight="0.0" prefHeight="34.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="120.0" minHeight="0.0" prefHeight="32.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="225.0" minHeight="0.0" prefHeight="116.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="129.0" minHeight="0.0" prefHeight="51.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label prefHeight="15.0" prefWidth="81.0" text="ID" />
+            <Label text="%lbl.name" GridPane.rowIndex="1" />
+            <Label text="%lbl.preuVenda" GridPane.rowIndex="2" />
+            <Label text="Stock" GridPane.rowIndex="3" />
+            <Label prefHeight="15.0" prefWidth="61.0" text="%lbl.iniciCataleg" GridPane.rowIndex="4" />
+            <TextField fx:id="idTextField" onKeyPressed="#onKeyPressedId" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+            <TextField fx:id="nomTextField" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+            <TextField fx:id="preuVendaTextField" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+            <TextField fx:id="stockTextField" disable="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+            <Label prefHeight="15.0" prefWidth="61.0" text="%lbl.fiCataleg" GridPane.rowIndex="5" />
+            <DatePicker fx:id="iniciCatDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <DatePicker fx:id="fiCatDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <CheckBox fx:id="packCheckBox" mnemonicParsing="false" onAction="#onActionCheck" text="Pack" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="%lbl.packProductes" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextArea fx:id="packProductesTextArea" editable="false" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <TextField fx:id="descompteTextField" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Label text="%lbl.descompte" GridPane.rowIndex="9" />
+         </children>
+      </GridPane>
+      <Button layoutX="338.0" layoutY="455.0" mnemonicParsing="false" onAction="#onActionGuardar" prefWidth="92.0" text="Guardar" />
+      <Button layoutX="444.0" layoutY="455.0" mnemonicParsing="false" onAction="#onActionEliminar" text="Eliminar" />
+      <Button layoutX="559.0" layoutY="455.0" mnemonicParsing="false" onAction="#onActionSortir" text="Sortir" />
+   </children>
+</AnchorPane>
