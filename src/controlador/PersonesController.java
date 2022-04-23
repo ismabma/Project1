@@ -1,13 +1,19 @@
 package controlador;
 
 import java.io.IOException;
+import java.sql.Connection;
 
 import org.controlsfx.validation.Severity;
 import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -20,6 +26,10 @@ public class PersonesController{
 
 	//Objecte per gestionar la persistència de les dades
 	private PersonesDAO persones;
+	//Objecte per gestionar el objecte actual
+	private Persona persona = null;
+	//indicador de nou registre
+	private boolean nouRegistre = false;
 
 	//Elements gràfics de la UI
 	private Stage ventana;
@@ -31,13 +41,15 @@ public class PersonesController{
 
 	private ValidationSupport vs;
 
+	public void setConexionBD(Connection conexionBD) {	
+		//Crear objecte DAO de persones
+		persones = new PersonesDAO(conexionBD);
+	}
+	
 	/**
 	 * Inicialitza la classe. JAVA l'executa automàticament després de carregar el fitxer fxml
 	 */
 	@FXML private void initialize() {
-		//Obrir el fitxer de persones
-		persones = new PersonesDAO();
-		persones.openAll();
 
 		//Validació dades
 		//https://github.com/controlsfx/controlsfx/issues/1148
@@ -110,7 +122,6 @@ public class PersonesController{
 	}
 
 	public void sortir(){
-		persones.saveAll();
 		persones.showAll();
 	}
 

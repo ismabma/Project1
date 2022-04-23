@@ -2,10 +2,13 @@ package model;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 /**
  * Clase per gestionar la persistència de les dades de les persones
@@ -14,65 +17,103 @@ import java.util.TreeMap;
  */
 public class PersonesDAO {
 
-	private TreeMap<Integer, Persona> persones = new TreeMap<Integer,Persona>();
+	private Connection conexionBD;
+
+	public PersonesDAO(Connection conexionBD) {
+		this.conexionBD = conexionBD;
+	}
+	
+	public List<Persona> getPersonesList() {
+		List<Persona> personesList = new ArrayList<Persona>();
+		try (ResultSet result = conexionBD.createStatement().executeQuery("SELECT * FROM persona")) {
+			while (result.next()) {
+				personesList.add(new Persona(result.getInt("id"), result.getString("nom"), result.getString("apellidos"),result.getString("email"),result.getString("telefon")));
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return personesList;
+	}
 
 	public boolean save(Persona persona){
-		persones.put(persona.getId(), persona);
-		return true;
+		try {
+			String sql = "";
+			PreparedStatement stmt = null;
+			if (this.find(persona.getId()) == null){
+				sql = "INSERT INTO persona(id, nom, apellidos, email, telefon) VALUES(?,?,?,?,?)";
+				stmt = conexionBD.prepareStatement(sql);
+				int i = 1;
+				stmt.setInt(i++, persona.getId());
+				stmt.setString(i++, persona.getNom());
+				stmt.setString(i++, persona.getApellidos());
+				stmt.setString(i++, persona.getEmail());
+				stmt.setString(i++, persona.getTelefon());
+			} else{
+				sql = "UPDATE persona SET nom=?,apellidos=?,email=?,telefon=? WHERE id = ?";
+				stmt = conexionBD.prepareStatement(sql);
+				int i = 1;
+				stmt.setString(i++, persona.getNom());
+				stmt.setString(i++, persona.getApellidos());
+				stmt.setString(i++, persona.getEmail());
+				stmt.setString(i++, persona.getTelefon());
+				stmt.setInt(i++, persona.getId());
+			}
+			int rows = stmt.executeUpdate();
+			if (rows == 1) return true;
+			else return false;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return false;
 	}
 
 	public boolean delete(Integer id){
-
-		if (persones.containsKey(id)){
-			persones.remove(id);
-			return true;
+		try {
+			String sql = "";
+			PreparedStatement stmt = null;
+			if (this.find(id) != null){
+				sql = "DELETE FROM persona WHERE id = ?";
+				stmt = conexionBD.prepareStatement(sql);
+				int i = 1;
+				stmt.setInt(i++, id);
+			}
+			int rows = stmt.executeUpdate();
+			if (rows == 1) return true;
+			else return false;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 		}
-
 		return false;
 	}
 
 	public Persona find(Integer id){
-
 		if (id == null || id == 0){
 			return null;
 		}
 
-		return persones.get(id);
-	}
-
-	public void saveAll(){
-
-		try (ObjectOutputStream oo = new ObjectOutputStream(new FileOutputStream("personas.dat"))) {
-			oo.writeObject(persones);
-		} catch (IOException e) {
-			System.out.println("Error escribiendo fichero");
+		Persona p = null;
+		try (PreparedStatement stmt = conexionBD.prepareStatement("SELECT * FROM persona WHERE id = ?")){
+			stmt.setInt(1, id); //informem el primer paràmetre de la consulta amb ?
+			ResultSet result = stmt.executeQuery();
+			if (result.next()) {
+				p = new Persona(result.getInt("id"), result.getString("nom"), result.getString("apellidos"),result.getString("email"),result.getString("telefon"));
+				p.imprimir();
+			}	
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 		}
 
-	}
-
-	@SuppressWarnings("unchecked")
-	public void openAll(){
-
-		File file = new File("personas.dat");
-		if (file.exists()) {
-			try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))){
-				persones = (TreeMap<Integer, Persona>) ois.readObject();
-			} catch (Exception e) {
-				System.out.println("Error leyendo fichero");
-			}
-		}
+		return p;
 	}
 
 	public void showAll(){
-
-		System.out.println("-------------------");
-		System.out.println("Todas los personas");
-		System.out.println("-------------------");
-		
-		for (Persona persona : persones.values()) {
-		    persona.imprimir();
-		    System.out.println("-------------------");
+		try (ResultSet result = conexionBD.createStatement().executeQuery("SELECT * FROM persona")) {
+			while (result.next()) {
+				Persona p = new Persona(result.getInt("id"), result.getString("nom"), result.getString("apellidos"),result.getString("email"),result.getString("telefon"));
+				p.imprimir();
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
 		}
 	}
 }
-

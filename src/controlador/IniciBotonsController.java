@@ -1,6 +1,8 @@
 package controlador;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.Locale;
 import java.util.Locale.Category;
 import java.util.ResourceBundle;
@@ -17,6 +19,7 @@ import javafx.stage.WindowEvent;
 
 public class IniciBotonsController extends Application {
 
+	private Connection conexionBD;
 	private ResourceBundle texts;
 	
 	//Injecció dels panells i controls de la UI definida al fitxer fxml
@@ -26,6 +29,20 @@ public class IniciBotonsController extends Application {
 	@FXML private Button btnProveidors;
 	@FXML private Button btnSortir; 
 
+	
+	public IniciBotonsController() {
+		try{
+			//Establir la connexio amb la BD
+			String urlBaseDades = "jdbc:postgresql://localhost/tienda";
+			String usuari = "postgres";
+			String contrasenya = "postgres";
+			conexionBD = DriverManager.getConnection(urlBaseDades , usuari, contrasenya);
+
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 
@@ -65,7 +82,6 @@ public class IniciBotonsController extends Application {
 	private void changeScene(String path, String title) throws IOException {
 		//Carrega el fitxer amb la interficie d'usuari
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(path));
-		
 		//Carregar fitxer de textos multiidioma de la localització actual
 		Locale localitzacioDisplay = Locale.getDefault(Category.DISPLAY);
 		texts = ResourceBundle.getBundle("vista.Texts", localitzacioDisplay);
@@ -85,6 +101,7 @@ public class IniciBotonsController extends Application {
 		if(title.equals("Persones")) {
 			PersonesController personasControler = loader.getController();
 			personasControler.setVentana(stage);
+			personasControler.setConexionBD(conexionBD);
 			
 			//Programem l'event que s'executará quan es tanqui la finestra
 			stage.setOnCloseRequest((WindowEvent we) -> {
@@ -93,6 +110,7 @@ public class IniciBotonsController extends Application {
 		} else if(title.equals("Productes")) {
 			ProductesController productesControler = loader.getController();
 			productesControler.setVentana(stage);
+			productesControler.setConexionBD(conexionBD);
 			
 			//Programem l'event que s'executará quan es tanqui la finestra
 			stage.setOnCloseRequest((WindowEvent we) -> {

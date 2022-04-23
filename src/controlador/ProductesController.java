@@ -1,6 +1,7 @@
 package controlador;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.TreeSet;
 
 import org.controlsfx.validation.ValidationSupport;
@@ -16,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import model.PersonesDAO;
 import model.Producte;
 import model.ProductesDAO;
 
@@ -39,13 +41,15 @@ public class ProductesController{
 
 	private ValidationSupport vs;
 
+	public void setConexionBD(Connection conexionBD) {	
+		//Crear objecte DAO de persones
+		productes = new ProductesDAO(conexionBD);
+	}
+	
 	/**
 	 * Inicialitza la classe. JAVA l'executa automàticament després de carregar el fitxer fxml
 	 */
 	@FXML private void initialize() {
-		//Obrir el fitxer de persones
-		productes = new ProductesDAO();
-		productes.openAll();
 
 		//Validació dades
 		//https://github.com/controlsfx/controlsfx/issues/1148
@@ -142,7 +146,6 @@ public class ProductesController{
 	}
 
 	public void sortir(){
-		productes.saveAll();
 		productes.showAll();
 	}
 
