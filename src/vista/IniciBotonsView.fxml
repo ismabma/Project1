@@ -13,7 +13,6 @@
 		<Button fx:id="btnPersones" layoutX="29.0" layoutY="34.0" mnemonicParsing="false" onAction="#onAction" text="%button.persones" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0" /> 
 		<Button fx:id="btnProductes" layoutX="20.0" layoutY="58.0" mnemonicParsing="false" onAction="#onAction" text="%button.productes" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="58.0" /> 
 		<Button fx:id="btnSortir" layoutX="226.0" layoutY="184.0" mnemonicParsing="false" onAction="#onAction" text="%button.sortir" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0" />
-      	<Button fx:id="btnClients" layoutX="20.0" layoutY="96.0" mnemonicParsing="false" onAction="#onAction" text="%button.clients" />
-      	<Button fx:id="btnProveidors" layoutX="20.0" layoutY="133.0" mnemonicParsing="false" onAction="#onAction" text="%button.proveidors" /> 
+      	<Button fx:id="btnAsistencia" layoutX="20.0" layoutY="96.0" mnemonicParsing="false" onAction="#onAction" text="Asistencia" /> 
 	</children>
 </AnchorPane>

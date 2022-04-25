@@ -25,8 +25,7 @@ public class IniciBotonsController extends Application {
 	//Injecció dels panells i controls de la UI definida al fitxer fxml
 	@FXML private Button btnPersones;
 	@FXML private Button btnProductes;
-	@FXML private Button btnClients;
-	@FXML private Button btnProveidors;
+	@FXML private Button btnAsistencia;
 	@FXML private Button btnSortir; 
 
 	
@@ -70,10 +69,8 @@ public class IniciBotonsController extends Application {
 			changeScene("/vista/PersonesView.fxml", "Persones");
 		}else if(e.getSource() == btnProductes){
 			changeScene("/vista/ProductesView.fxml", "Productes");
-		}else if(e.getSource() == btnClients){
-			changeScene("/vista/ClientsView.fxml", "Clients");
-		}else if(e.getSource() == btnProveidors){
-			changeScene("/vista/ProveidorsView.fxml", "Proveidors");
+		}else if(e.getSource() == btnAsistencia){
+			changeScene("/vista/AsistenciaView.fxml", "Asistencia");
 		}else if(e.getSource() == btnSortir){
 			Platform.exit();
 		}
@@ -115,6 +112,15 @@ public class IniciBotonsController extends Application {
 			//Programem l'event que s'executará quan es tanqui la finestra
 			stage.setOnCloseRequest((WindowEvent we) -> {
 				productesControler.sortir();
+			});
+		} else if(title.equals("Asistencia")) {
+			AsistenciaController asistenciaControler = loader.getController();
+			asistenciaControler.setVentana(stage);
+			asistenciaControler.setConexionBD(conexionBD);
+			
+			//Programem l'event que s'executará quan es tanqui la finestra
+			stage.setOnCloseRequest((WindowEvent we) -> {
+				asistenciaControler.sortir();
 			});
 		}
 		
